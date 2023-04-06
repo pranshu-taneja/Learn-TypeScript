@@ -81,3 +81,138 @@
     ```
 These are just a few examples of the many types available in TypeScript. The most commonly used types are `string`, `number`, `boolean`, `array`, and `object`, while `any` and `void` should be used sparingly.
 
+
+# **Type Alias & Interfaces**
+
+## Types vs. Interfaces in TypeScript
+
+Both types and interfaces allow you to define custom types in TypeScript, but there are some differences between them.
+
+### Types
+
+- Types allow you to define a custom type by specifying the type of its properties and methods.
+- Types can be used to define union types, intersection types, tuples, and other complex types.
+- Types are useful for creating reusable types that can be used throughout your codebase.
+
+Example:
+
+```typescript
+type Person = {
+name: string;
+age: number;
+address?: string;       //for optional property
+}
+```
+
+In the above example, we defined a type `Person` that has a `name` property of type `string`, an `age` property of type `number`, and an optional `address` property of type `string`.
+
+## Interfaces
+
+- Interfaces allow you to define a custom type by specifying the shape of its properties and methods.
+- Interfaces can extend other interfaces, which makes them useful for creating modular and composable types.
+- Interfaces are useful for creating types that are consumed by external code or libraries.
+
+Example:
+```typescript
+interface User {
+name: string;
+email: string;
+}
+
+interface Admin extends User {
+adminLevel: number;
+}
+```
+
+In the above example, we defined an interface `User` that has a `name` property of type `string` and an `email` property of type `string`. We then defined an interface `Admin` that extends `User` and has an additional `adminLevel` property of type `number`.
+
+# **Union, Intersection, and Tuple Types in TypeScript**
+
+1. Union type allows a variable to have multiple types, denoted by the | symbol.
+1. Intersection type combines multiple types into a single type, denoted by the & symbol.
+1. Tuple type allows an array to have a fixed number of elements with different types, denoted by square brackets and the types in order.
+
+
+# **Generics in TypeScript**
+- Generics in TypeScript allow us to create reusable code that can work with different types. They are used to create functions, classes, and interfaces that can work with any data type. These are almost similar to templates in cpp language.
+
+*`Example:1.`*
+```typescript
+function identity<T>(arg: T): T {
+    return arg;
+}
+
+// Usage
+let output1 = identity<string>("hello"); // returns "hello"
+let output2 = identity<number>(123); // returns 123
+```
+
+*`Example:2.`*
+```typescript
+class DataStore<T> {
+  private data: T[] = [];          //array of custom type
+
+  add(item: T) {
+      this.data.push(item);
+  }
+
+  getAll(): T[] {
+      return this.data;
+  }
+}
+
+// Usage
+const store = new DataStore<string>();
+store.add("foo");
+store.add("bar");
+const items = store.getAll(); // returns ["foo", "bar"]
+```
+
+*`Example:3.`*
+```typescript
+function add<T extends number | string>(a: T, b: T): T {        //restricting the type of T to number and string only   
+  return a + b;
+}       //This function won't work cuz it might not know how to add two objects
+```
+
+
+*`Example:4.`*
+```typescript
+function add(a: any, b: any): any {     //Now this might not be called as generics
+    return a+b;
+}
+//But this function will work cuz there is any which tells that its one of the type that typescript or javascript knows how to operate using a operator
+```
+
+*`Example:5.`*
+```typescript
+function value<T>(a:Array<T>, b:Array<T>):Array<T>{
+    console.log(a.length);  //length again won't work if you don't tell him that its going to be array
+    return a;
+}
+```
+
+*`Example:5. (real life implementation)`*
+```typescript
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+}
+
+function filterProducts<T>(products: T[], criteria: (product: T) => boolean): T[] {
+  return products.filter(criteria);
+}
+
+const products: Product[] = [
+  { id: 1, name: 'Product A', price: 10 },
+  { id: 2, name: 'Product B', price: 20 },
+  { id: 3, name: 'Product C', price: 30 },
+];
+
+const filteredProducts = filterProducts(products, product => product.price >= 20 && product.price <= 30);
+
+console.log(filteredProducts);
+// Output: [{ id: 2, name: 'Product B', price: 20 }, { id: 3, name: 'Product C', price: 30 }]
+
+```
