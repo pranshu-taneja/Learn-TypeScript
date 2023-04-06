@@ -1,3 +1,9 @@
+# **TIPS**
+- <p style="color:yellow;">Use I as a prefix for interfaces. and T as a prefix for types. Increases code readability!!</p> 
+- <p style="color:pink;">Use PascalCase for interface names and camelCase for variable names.</p>
+- <p style="color:lightgreen;">Use a question mark (?) to denote an optional property.</p>
+- 
+
 # **What are some of the features that TypeScript adds to JavaScript?**
 
 - TypeScript adds optional static typing, classes, interfaces, enums, generics, and other features to JavaScript.
@@ -170,9 +176,19 @@ const items = store.getAll(); // returns ["foo", "bar"]
 
 *`Example:3.`*
 ```typescript
-function add<T extends number | string>(a: T, b: T): T {        //restricting the type of T to number and string only   
-  return a + b;
-}       //This function won't work cuz it might not know how to add two objects
+interface Hasshit{
+    age: number;
+}
+function holo<T extends Hasshit>(parameter:T):T{        //Here We are telling that T generic will have a property named by age cuz its of interface from Hasshit and we need to pass the alredy made type like the made interface above
+    console.log("\nGeneric who knows a specific property upcoming : ",parameter.age);
+    return parameter;
+}
+
+const bo:Hasshit = {
+    age:13
+}
+
+holo(bo);
 ```
 
 
@@ -192,7 +208,7 @@ function value<T>(a:Array<T>, b:Array<T>):Array<T>{
 }
 ```
 
-*`Example:5. (real life implementation)`*
+*`Example:6. (real life implementation)`*
 ```typescript
 interface Product {
   id: number;
@@ -201,11 +217,13 @@ interface Product {
 }
 
 function filterProducts<T>(products: T[], criteria: (product: T) => boolean): T[] {
-  return products.filter(criteria);
+  return products.filter(criteria);         //this step is very crucial  
+  //basically filter method returns an array which is made newly
+  // the syntax arr.filter(callback_fun_name); 
 }
 
 const products: Product[] = [
-  { id: 1, name: 'Product A', price: 10 },
+    { id: 1, name: 'Product A', price: 10 },
   { id: 2, name: 'Product B', price: 20 },
   { id: 3, name: 'Product C', price: 30 },
 ];
@@ -216,3 +234,42 @@ console.log(filteredProducts);
 // Output: [{ id: 2, name: 'Product B', price: 20 }, { id: 3, name: 'Product C', price: 30 }]
 
 ```
+
+
+*`Example:7. (real life implementation but important tbh)`*
+```typescript
+interface IPost {
+    title: string;
+    id: number;
+    description: string;
+}
+
+interface IUser {
+    id: number;
+    name: string;
+    age: number;
+}
+
+const fetchPostData = async (path: string): Promise<IPost[]> => {
+    const response = await fetch(`http://example.com${path}`);
+    return response.json();
+};
+
+const fetchUsersData = async (path: string): Promise<IUser[]> => {
+    const response = await fetch(`http://example.com${path}`);
+    return response.json();
+};
+
+const fetchData = async <ResultType>(path: string): Promise<ResultType> => {
+    const response = await fetch(`http://example.com${path}`);
+    return response.json();
+}
+
+(async () => {
+    // const posts = await fetchPostData('/posts');
+    const posts = await fetchData<IPost[]>('/posts');
+    posts[0].
+})();
+
+```
+
