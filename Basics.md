@@ -250,7 +250,7 @@ interface IUser {
     age: number;
 }
 
-const fetchPostData = async (path: string): Promise<IPost[]> => {
+const fetchPostData = async (path: string): Promise<IPost[]> => {       //Here promise is a inbuild type in typescript so its working as a type here
     const response = await fetch(`http://example.com${path}`);
     return response.json();
 };
@@ -265,11 +265,154 @@ const fetchData = async <ResultType>(path: string): Promise<ResultType> => {
     return response.json();
 }
 
-(async () => {
+(async () => {      //immediately invoked function expression
     // const posts = await fetchPostData('/posts');
     const posts = await fetchData<IPost[]>('/posts');
     posts[0].
 })();
 
 ```
+
+# **Structeral typing and duck typing in typescript**
+
+# Structural and Duck Typing
+
+> Structural and duck typing are two type systems used in programming. 
+
+## Structural Typing
+
+`Structural typing is a type system where types are based on the structure of the object rather than the name of the object. In other words, if two objects have the same structure, they are considered to have the same type. Here's an example in TypeScript:`
+
+```typescript
+interface Person {
+  name: string;
+  age: number;
+}
+
+function printPerson(person: Person) {
+  console.log(`Name: ${person.name}, Age: ${person.age}`);
+}
+
+const john = { name: "John Doe", age: 30 };
+const jane = { name: "Jane Doe", age: 25 };
+
+printPerson(john); // prints "Name: John Doe, Age: 30"
+printPerson(jane); // prints "Name: Jane Doe, Age: 25"
+```
+
+In this example, the `printPerson` function takes an object of type `Person`. However, instead of defining a `Person` class, we define a TypeScript interface that describes the structure of a `Person` object. Then, we can pass in any object that has the same structure as `Person` to the `printPerson` function.
+
+## Duck Typing in TypeScript
+
+`Duck typing is a feature of TypeScript that allows you to use objects that have the same shape, rather than those that are of the same type. This can be useful when working with third-party libraries or legacy code that may not have been written in TypeScript. `
+
+Here's an example of how you could use duck typing in TypeScript:
+
+```typescript
+interface Person {
+  name: string;
+  age: number;
+}
+
+interface Employee {
+  name: string;
+  salary: number;
+}
+
+function printDetails(person: Person | Employee) {
+  console.log(person.name);
+}
+
+const john = { name: 'John', age: 30 };
+const jane = { name: 'Jane', salary: 50000 };
+
+printDetails(john); // prints 'John'
+printDetails(jane); // also prints 'Jane'
+```
+
+In this example, we define two interfaces (`Person` and `Employee`) that have different properties. We then define a function `printDetails` that takes an argument of type `Person` or `Employee`. Instead of checking the type of the argument, we only care that it has a `name` property. 
+
+We can then call `printDetails` with objects that conform to either interface, and TypeScript will not raise any errors since both objects have a `name` property. 
+
+This is just one example of how duck typing can be used in TypeScript to write more flexible code.
+
+
+## **Tricky Example of Duck Typing**
+
+```typescript
+interface CanFly {
+  fly(): void;
+}
+
+class Bird implements CanFly {
+  fly() {
+    console.log("Flying...");
+  }
+}
+
+class Airplane {
+  fly() {
+    console.log("Flying...");
+  }
+}
+
+function processFlyingObject(obj: CanFly) {
+  obj.fly();
+}
+
+let myBird = new Bird();
+let myAirplane = new Airplane();
+
+processFlyingObject(myBird); // Output: "Flying..."
+processFlyingObject(myAirplane); // Output: "Error: Property 'fly' is missing"
+
+```
+
+In this example, we have an interface `CanFly` that defines a method `fly()`. The `Bird` class implements this interface and provides a method to fly. However, the `Airplane` class also has a method named `fly()`, but it does not implement the `CanFly` interface.
+
+When we call the `processFlyingObject()` function with an instance of the `Bird` class, everything works as expected because it implements the `CanFly` interface. However, when we pass an instance of the `Airplane` class, which does not implement
+
+## **One more easy tricy example of duck typing**
+
+```typescript
+interface st_typing{
+    name: string,
+    rn : number,
+}
+
+function work(parameter:st_typing):st_typing{
+    console.log(parameter.rn, parameter.name);
+    return parameter;
+}
+
+const obj = {
+    name: "Hey",
+    rn : 183,
+    subjects : 123
+}
+
+work(obj);
+```
+
+`Explanation: Here we are passing an object to the function work() which is not implementing the interface st_typing but it has the same properties as the interface st_typing so it is working fine.`
+
+>>>>> *Duck typing is a concept where the type of an object is determined by its behavior rather than its class or structure. In TypeScript, duck typing means that if an object has all the required properties of an interface, it is considered to be of that interface type, regardless of whether it explicitly implements the interface or not.*
+
+# **Inferece in typescript**
+Inference in TypeScript is the ability of the compiler to automatically deduce the types of variables and expressions based on their usage in the code, without the need for the developer to explicitly declare their types.
+
+`Example:`
+```typescript
+let a = 10; // a is inferred to be of type number
+```
+
+# **TsConfig.json Details**
+- `OutDir` property tells  where the compiled files will go.
+- `Include` property tells which files/folders to include in the compilation.
+- `Exclude` property tells which files/folders to exclude from the compilation.
+- In the terminal `tsc --init` command will create a tsconfig.json file in the current directory  
+- `tsc --showConfig` will show the current configuration of the tsconfig.json file that are being used for the project directory.
+
+# **Decorators in typescript**
+# **Type Guards**
 
