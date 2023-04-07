@@ -2,7 +2,6 @@
 - <p style="color:yellow;">Use I as a prefix for interfaces. and T as a prefix for types. Increases code readability!!</p> 
 - <p style="color:pink;">Use PascalCase for interface names and camelCase for variable names.</p>
 - <p style="color:lightgreen;">Use a question mark (?) to denote an optional property.</p>
-- 
 
 # **What are some of the features that TypeScript adds to JavaScript?**
 
